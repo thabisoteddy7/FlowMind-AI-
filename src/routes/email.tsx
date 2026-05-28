@@ -142,20 +142,11 @@ Do NOT include markdown, headers, or commentary. Output only the email itself st
           <Disclaimer />
         </div>
       </div>
-
-      <style>{styles}</style>
     </div>
   );
 }
 
-const styles = `
-.input { width:100%; padding:.65rem .8rem; border-radius:.6rem; background:var(--color-input); border:1px solid var(--color-border); color:var(--color-foreground); outline:none; font-size:.9rem; transition:border-color .2s, box-shadow .2s; }
-.input:focus { border-color: var(--pop-purple); box-shadow: 0 0 0 3px color-mix(in oklab, var(--pop-purple) 25%, transparent); }
-.textarea { width:100%; padding:.7rem .8rem; border-radius:.6rem; background:var(--color-input); border:1px solid var(--color-border); color:var(--color-foreground); outline:none; font-size:.9rem; resize:vertical; line-height:1.5; font-family: var(--font-sans); transition:border-color .2s, box-shadow .2s; }
-.textarea:focus { border-color: var(--pop-purple); box-shadow: 0 0 0 3px color-mix(in oklab, var(--pop-purple) 25%, transparent); }
-.icon-btn { padding:.4rem; border-radius:.5rem; border:1px solid var(--color-border); background:var(--color-card); color: var(--color-muted-foreground); transition:all .15s; }
-.icon-btn:hover { color: var(--color-foreground); border-color: var(--pop-purple); }
-`;
+
 
 export function Select({ value, onChange, options }: { value: string; onChange: (v: string) => void; options: readonly string[] }) {
   return (
