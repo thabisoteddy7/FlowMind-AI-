@@ -63,9 +63,18 @@ function Dashboard() {
       <div className="relative overflow-hidden rounded-2xl border border-border p-6 lg:p-10 glass-card animate-slide-up">
         <div
           aria-hidden
-          className="absolute -top-32 -right-32 h-72 w-72 rounded-full blur-3xl opacity-40"
-          style={{ background: "var(--gradient-rainbow)" }}
+          className="absolute -top-40 -right-32 h-[28rem] w-[28rem] rounded-full blur-3xl opacity-70 pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(circle, #ff7a18 0%, #ff3d00 35%, rgba(255,61,0,0.25) 65%, transparent 80%)",
+          }}
         />
+        <div
+          aria-hidden
+          className="absolute -bottom-32 -left-24 h-80 w-80 rounded-full blur-3xl opacity-40 pointer-events-none"
+          style={{ background: "radial-gradient(circle, #ffb830 0%, transparent 70%)" }}
+        />
+
         <p className="text-sm text-muted-foreground">{greeting()},</p>
         <h1 className="mt-1 text-3xl lg:text-5xl font-display font-bold tracking-tight">
           <span className="rainbow-text">{name?.trim() ? name : "welcome back"}</span>
