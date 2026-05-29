@@ -10,7 +10,11 @@ export const Route = createFileRoute("/settings")({
   head: () => ({
     meta: [
       { title: "Settings — FlowMind" },
-      { name: "description", content: "Personalize your FlowMind experience." },
+      { name: "description", content: "Personalize your FlowMind experience by adjusting your AI tone, response length, theme, and display name." },
+      { property: "og:title", content: "Settings — FlowMind" },
+      { property: "og:description", content: "Personalize your FlowMind experience by adjusting your AI tone, response length, theme, and display name." },
+      { property: "og:url", content: "https://aura-work-assist.lovable.app/settings" },
+      { property: "og:type", content: "website" },
     ],
   }),
   component: SettingsPage,
@@ -52,12 +56,12 @@ function SettingsPage() {
       <div className="mt-8 space-y-4">
         <div className="rainbow-border p-6 space-y-5">
           <div>
-            <FieldLabel>Your name (used in greetings)</FieldLabel>
-            <input value={s.name} onChange={(e) => update("name", e.target.value)} placeholder="e.g. Maya" className="input max-w-sm" />
+            <FieldLabel htmlFor="settings-name">Your name (used in greetings)</FieldLabel>
+            <input id="settings-name" value={s.name} onChange={(e) => update("name", e.target.value)} placeholder="e.g. Maya" className="input max-w-sm" />
           </div>
           <div>
-            <FieldLabel>Default email tone</FieldLabel>
-            <div className="max-w-sm"><Select value={s.defaultTone} onChange={(v) => update("defaultTone", v)} options={TONES} /></div>
+            <FieldLabel htmlFor="settings-tone">Default email tone</FieldLabel>
+            <div className="max-w-sm"><Select id="settings-tone" value={s.defaultTone} onChange={(v) => update("defaultTone", v)} options={TONES} /></div>
           </div>
           <div>
             <FieldLabel>AI response length</FieldLabel>

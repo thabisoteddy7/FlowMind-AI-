@@ -12,6 +12,10 @@ export const Route = createFileRoute("/email")({
     meta: [
       { title: "Email Generator — FlowMind" },
       { name: "description", content: "Generate professional emails in the perfect tone for any audience." },
+      { property: "og:title", content: "Email Generator — FlowMind" },
+      { property: "og:description", content: "Generate professional emails in the perfect tone for any audience." },
+      { property: "og:url", content: "https://aura-work-assist.lovable.app/email" },
+      { property: "og:type", content: "website" },
     ],
   }),
   component: EmailPage,
@@ -84,17 +88,18 @@ Do NOT include markdown, headers, or commentary. Output only the email itself st
         <div className="rainbow-border p-6 animate-slide-up">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <FieldLabel>Recipient</FieldLabel>
-              <Select value={recipient} onChange={setRecipient} options={RECIPIENTS} />
+              <FieldLabel htmlFor="email-recipient">Recipient</FieldLabel>
+              <Select id="email-recipient" value={recipient} onChange={setRecipient} options={RECIPIENTS} />
             </div>
             <div>
-              <FieldLabel>Tone</FieldLabel>
-              <Select value={tone} onChange={setTone} options={TONES} />
+              <FieldLabel htmlFor="email-tone">Tone</FieldLabel>
+              <Select id="email-tone" value={tone} onChange={setTone} options={TONES} />
             </div>
           </div>
           <div className="mt-4">
-            <FieldLabel>Subject / Purpose</FieldLabel>
+            <FieldLabel htmlFor="email-subject">Subject / Purpose</FieldLabel>
             <input
+              id="email-subject"
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
               placeholder="e.g. Follow up on Q3 proposal"
@@ -102,8 +107,9 @@ Do NOT include markdown, headers, or commentary. Output only the email itself st
             />
           </div>
           <div className="mt-4">
-            <FieldLabel>Key points to include</FieldLabel>
+            <FieldLabel htmlFor="email-points">Key points to include</FieldLabel>
             <textarea
+              id="email-points"
               value={points}
               onChange={(e) => setPoints(e.target.value)}
               rows={7}
@@ -119,11 +125,11 @@ Do NOT include markdown, headers, or commentary. Output only the email itself st
         {/* Output */}
         <div className="rounded-2xl border border-border bg-card p-6 min-h-[420px] flex flex-col">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-display font-semibold">Generated email</h3>
+            <h2 className="font-display font-semibold">Generated email</h2>
             {output && (
               <div className="flex items-center gap-2">
-                <button onClick={copy} className="icon-btn"><Copy className="h-4 w-4" /></button>
-                <button onClick={run} disabled={loading} className="icon-btn"><RefreshCw className="h-4 w-4" /></button>
+                <button onClick={copy} aria-label="Copy email to clipboard" className="icon-btn"><Copy className="h-4 w-4" /></button>
+                <button onClick={run} disabled={loading} aria-label="Regenerate email" className="icon-btn"><RefreshCw className="h-4 w-4" /></button>
               </div>
             )}
           </div>
@@ -148,9 +154,9 @@ Do NOT include markdown, headers, or commentary. Output only the email itself st
 
 
 
-export function Select({ value, onChange, options }: { value: string; onChange: (v: string) => void; options: readonly string[] }) {
+export function Select({ value, onChange, options, id }: { value: string; onChange: (v: string) => void; options: readonly string[]; id?: string }) {
   return (
-    <select value={value} onChange={(e) => onChange(e.target.value)} className="input">
+    <select id={id} value={value} onChange={(e) => onChange(e.target.value)} className="input">
       {options.map((o) => <option key={o} value={o}>{o}</option>)}
     </select>
   );

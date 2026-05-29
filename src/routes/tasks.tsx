@@ -13,6 +13,10 @@ export const Route = createFileRoute("/tasks")({
     meta: [
       { title: "Task Planner — FlowMind" },
       { name: "description", content: "Auto-prioritize your tasks into a smart, time-blocked daily plan." },
+      { property: "og:title", content: "Task Planner — FlowMind" },
+      { property: "og:description", content: "Auto-prioritize your tasks into a smart, time-blocked daily plan." },
+      { property: "og:url", content: "https://aura-work-assist.lovable.app/tasks" },
+      { property: "og:type", content: "website" },
     ],
   }),
   component: TasksPage,
@@ -100,22 +104,22 @@ Rules:
       <div className="grid lg:grid-cols-[1fr_1.3fr] gap-6 mt-8">
         <div className="rainbow-border p-6 animate-slide-up space-y-4">
           <div>
-            <FieldLabel>Task list (one per line)</FieldLabel>
-            <textarea value={list} onChange={(e) => setList(e.target.value)} rows={8} placeholder={"Send invoice to ACME\nPrep Q3 board deck\nReview pull requests\nGym"} className="textarea" />
+            <FieldLabel htmlFor="tasks-list">Task list (one per line)</FieldLabel>
+            <textarea id="tasks-list" value={list} onChange={(e) => setList(e.target.value)} rows={8} placeholder={"Send invoice to ACME\nPrep Q3 board deck\nReview pull requests\nGym"} className="textarea" />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <FieldLabel>Deadline</FieldLabel>
-              <input type="date" value={deadline} onChange={(e) => setDeadline(e.target.value)} className="input" />
+              <FieldLabel htmlFor="tasks-deadline">Deadline</FieldLabel>
+              <input id="tasks-deadline" type="date" value={deadline} onChange={(e) => setDeadline(e.target.value)} className="input" />
             </div>
             <div>
-              <FieldLabel>Working hours / day</FieldLabel>
-              <input type="number" min={1} max={14} value={hours} onChange={(e) => setHours(+e.target.value)} className="input" />
+              <FieldLabel htmlFor="tasks-hours">Working hours / day</FieldLabel>
+              <input id="tasks-hours" type="number" min={1} max={14} value={hours} onChange={(e) => setHours(+e.target.value)} className="input" />
             </div>
           </div>
           <div>
-            <FieldLabel>Priority weight: {["Low", "Normal", "Urgent"][priority - 1]}</FieldLabel>
-            <input type="range" min={1} max={3} value={priority} onChange={(e) => setPriority(+e.target.value)} className="w-full accent-[color:var(--pop-purple)]" />
+            <FieldLabel htmlFor="tasks-priority">Priority weight: {["Low", "Normal", "Urgent"][priority - 1]}</FieldLabel>
+            <input id="tasks-priority" type="range" min={1} max={3} value={priority} onChange={(e) => setPriority(+e.target.value)} className="w-full accent-[color:var(--pop-purple)]" />
             <div className="flex justify-between text-[10px] uppercase tracking-wider text-muted-foreground mt-1">
               <span>Low</span><span>Normal</span><span>Urgent</span>
             </div>
@@ -155,7 +159,7 @@ Rules:
                     <div className="text-xs font-mono text-muted-foreground shrink-0 w-32">{b.time}</div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <h4 className="font-semibold">{b.title}</h4>
+                        <h3 className="font-semibold">{b.title}</h3>
                         <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full" style={{ background: `color-mix(in oklab, ${COLOR[b.priority]} 22%, transparent)`, color: COLOR[b.priority] }}>{b.priority}</span>
                       </div>
                       {b.reason && <p className="text-xs text-muted-foreground mt-1">{b.reason}</p>}

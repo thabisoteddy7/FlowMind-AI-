@@ -13,6 +13,10 @@ export const Route = createFileRoute("/meetings")({
     meta: [
       { title: "Meeting Summarizer — FlowMind" },
       { name: "description", content: "Turn raw meeting notes into clear summaries, action items, and follow-ups." },
+      { property: "og:title", content: "Meeting Summarizer — FlowMind" },
+      { property: "og:description", content: "Turn raw meeting notes into clear summaries, action items, and follow-ups." },
+      { property: "og:url", content: "https://aura-work-assist.lovable.app/meetings" },
+      { property: "og:type", content: "website" },
     ],
   }),
   component: MeetingsPage,
@@ -104,8 +108,8 @@ Meeting type: ${type}. ${full ? "Provide the full breakdown." : "Keep each secti
         <div className="rainbow-border p-6 animate-slide-up">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <FieldLabel>Meeting type</FieldLabel>
-              <Select value={type} onChange={setType} options={TYPES} />
+              <FieldLabel htmlFor="meeting-type">Meeting type</FieldLabel>
+              <Select id="meeting-type" value={type} onChange={setType} options={TYPES} />
             </div>
             <div>
               <FieldLabel>Output</FieldLabel>
@@ -116,8 +120,8 @@ Meeting type: ${type}. ${full ? "Provide the full breakdown." : "Keep each secti
             </div>
           </div>
           <div className="mt-4">
-            <FieldLabel>Raw notes / transcript</FieldLabel>
-            <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={14} placeholder="Paste meeting notes or transcript here…" className="textarea" />
+            <FieldLabel htmlFor="meeting-notes">Raw notes / transcript</FieldLabel>
+            <textarea id="meeting-notes" value={notes} onChange={(e) => setNotes(e.target.value)} rows={14} placeholder="Paste meeting notes or transcript here…" className="textarea" />
           </div>
           <button onClick={run} disabled={loading} className="btn-rainbow mt-5 w-full rounded-lg px-4 py-3 text-sm flex items-center justify-center gap-2 disabled:opacity-60">
             <Sparkles className="h-4 w-4" /> {loading ? "Summarizing…" : "Summarize"}
@@ -174,7 +178,7 @@ function Block({ title, accent, children }: { title: string; accent: string; chi
     <div className="rounded-2xl border border-border bg-card overflow-hidden">
       <div className="px-5 py-3 flex items-center gap-2 border-b border-border" style={{ background: `color-mix(in oklab, ${accent} 10%, transparent)` }}>
         <span className="h-2 w-2 rounded-full" style={{ background: accent, boxShadow: `0 0 12px ${accent}` }} />
-        <h3 className="font-display text-sm font-semibold">{title}</h3>
+        <h2 className="font-display text-sm font-semibold">{title}</h2>
       </div>
       <div className="p-5">{children}</div>
     </div>
