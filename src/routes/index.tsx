@@ -2,8 +2,9 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Mail, FileText, ListTodo, Sparkles, ArrowRight, Clock } from "lucide-react";
 import { getActivity, getSettings, counts, type ActivityItem } from "@/lib/activity";
+import { Chatbot } from "@/components/Chatbot";
+import { Board } from "@/components/Board";
 
-export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Dashboard — FlowMind" },
