@@ -4,7 +4,8 @@ import { useMutation } from "@tanstack/react-query";
 import { Send, Sparkles, Loader2 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { chatAI } from "@/lib/ai.functions";
-import { pushActivity } from "@/lib/activity";
+import { addActivity } from "@/lib/activity";
+
 
 type Msg = { role: "user" | "assistant"; content: string };
 
