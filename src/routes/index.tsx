@@ -5,6 +5,8 @@ import { getActivity, getSettings, counts, type ActivityItem } from "@/lib/activ
 import { Chatbot } from "@/components/Chatbot";
 import { Board } from "@/components/Board";
 
+export const Route = createFileRoute("/")({
+
   head: () => ({
     meta: [
       { title: "Dashboard — FlowMind" },
