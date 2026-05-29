@@ -131,6 +131,25 @@ function Dashboard() {
         </div>
       </section>
 
+      {/* Chatbot + Board */}
+      <section className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+        <div className="lg:col-span-2">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="font-display text-lg font-semibold">AI Assistant</h2>
+            <span className="text-xs text-muted-foreground">Chat with FlowMind</span>
+          </div>
+          <Chatbot />
+        </div>
+        <div className="lg:col-span-3">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="font-display text-lg font-semibold">Your Board</h2>
+            <span className="text-xs text-muted-foreground">Drag cards between columns</span>
+          </div>
+          <Board />
+        </div>
+      </section>
+
+
       {/* Recent activity */}
       <section>
         <h2 className="font-display text-lg font-semibold mb-3">Recent Activity</h2>
