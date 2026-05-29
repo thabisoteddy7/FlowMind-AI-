@@ -1,0 +1,14 @@
+# FlowMind
+
+> AI Workplace Assistant that helps professionals draft emails, summarize meetings, plan their day, and research any topic — all in one premium dark-themed dashboard.
+
+FlowMind is a SaaS-style productivity app powered by AI. Each tool is built around a focused workflow with structured, ready-to-use output.
+
+## Pages
+
+- [Dashboard](/): Personalized greeting, usage stats, quick actions, and recent AI activity feed.
+- [Email Generator](/email): Draft professional emails with tone and audience controls.
+- [Meeting Summarizer](/meetings): Convert raw notes or transcripts into summaries, action items, and follow-ups.
+- [Task Planner](/tasks): Auto-prioritize tasks into a time-blocked daily schedule with reasoning.
+- [Research Assistant](/research): Get structured insights, next steps, and open questions on any topic.
+- [Settings](/settings): Customize name, default tone, AI response length, and theme.

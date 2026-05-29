@@ -8,6 +8,10 @@ export const Route = createFileRoute("/")({
     meta: [
       { title: "Dashboard — FlowMind" },
       { name: "description", content: "Your AI workplace dashboard: emails, meetings, tasks, and research at a glance." },
+      { property: "og:title", content: "Dashboard — FlowMind" },
+      { property: "og:description", content: "Your AI workplace dashboard: emails, meetings, tasks, and research at a glance." },
+      { property: "og:url", content: "https://aura-work-assist.lovable.app/" },
+      { property: "og:type", content: "website" },
     ],
   }),
   component: Dashboard,
@@ -38,12 +42,14 @@ function Dashboard() {
   const [name, setName] = useState("");
   const [c, setC] = useState({ email: 0, meeting: 0, task: 0, research: 0 });
   const [activity, setActivity] = useState<ActivityItem[]>([]);
+  const [greet, setGreet] = useState("");
 
   useEffect(() => {
     const sync = () => {
       setName(getSettings().name);
       setC(counts());
       setActivity(getActivity().slice(0, 5));
+      setGreet(greeting());
     };
     sync();
     window.addEventListener("flowmind:activity", sync);
@@ -63,7 +69,7 @@ function Dashboard() {
           className="absolute -top-32 -right-32 h-72 w-72 rounded-full blur-3xl opacity-40"
           style={{ background: "var(--gradient-rainbow)" }}
         />
-        <p className="text-sm text-muted-foreground">{greeting()},</p>
+        <p className="text-sm text-muted-foreground min-h-[1.25rem]" suppressHydrationWarning>{greet ? `${greet},` : "\u00A0"}</p>
         <h1 className="mt-1 text-3xl lg:text-5xl font-display font-bold tracking-tight">
           <span className="rainbow-text">{name?.trim() ? name : "welcome back"}</span>
           <span className="text-foreground">. Let's ship today.</span>

@@ -28,8 +28,8 @@ export function Disclaimer() {
   );
 }
 
-export function FieldLabel({ children }: { children: React.ReactNode }) {
-  return <label className="block text-xs font-medium uppercase tracking-wider text-muted-foreground mb-2">{children}</label>;
+export function FieldLabel({ children, htmlFor }: { children: React.ReactNode; htmlFor?: string }) {
+  return <label htmlFor={htmlFor} className="block text-xs font-medium uppercase tracking-wider text-muted-foreground mb-2">{children}</label>;
 }
 
 export function Section({
@@ -47,7 +47,7 @@ export function Section({
     <section className="mb-6">
       <div className="flex items-baseline gap-3 mb-3">
         <span className="h-2.5 w-2.5 rounded-full" style={{ background: accent, boxShadow: `0 0 14px ${accent}` }} />
-        <h3 className="font-display text-base font-semibold">{title}</h3>
+        <h2 className="font-display text-base font-semibold">{title}</h2>
         {description && <span className="text-xs text-muted-foreground">{description}</span>}
       </div>
       {children}

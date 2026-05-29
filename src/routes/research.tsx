@@ -13,6 +13,10 @@ export const Route = createFileRoute("/research")({
     meta: [
       { title: "Research Assistant — FlowMind" },
       { name: "description", content: "Get structured insights on any topic with an AI research assistant." },
+      { property: "og:title", content: "Research Assistant — FlowMind" },
+      { property: "og:description", content: "Get structured insights on any topic with an AI research assistant." },
+      { property: "og:url", content: "https://aura-work-assist.lovable.app/research" },
+      { property: "og:type", content: "website" },
     ],
   }),
   component: ResearchPage,
@@ -104,8 +108,8 @@ No commentary outside these sections.`;
       <div className="grid lg:grid-cols-[1fr_1.3fr] gap-6 mt-8">
         <div className="rainbow-border p-6 animate-slide-up space-y-4">
           <div>
-            <FieldLabel>Topic or question</FieldLabel>
-            <textarea value={topic} onChange={(e) => setTopic(e.target.value)} rows={6} placeholder="e.g. How are AI agents changing customer support in 2025?" className="textarea" />
+            <FieldLabel htmlFor="research-topic">Topic or question</FieldLabel>
+            <textarea id="research-topic" value={topic} onChange={(e) => setTopic(e.target.value)} rows={6} placeholder="e.g. How are AI agents changing customer support in 2025?" className="textarea" />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
@@ -116,8 +120,8 @@ No commentary outside these sections.`;
               </div>
             </div>
             <div>
-              <FieldLabel>Output style</FieldLabel>
-              <Select value={style} onChange={setStyle} options={STYLES} />
+              <FieldLabel htmlFor="research-style">Output style</FieldLabel>
+              <Select id="research-style" value={style} onChange={setStyle} options={STYLES} />
             </div>
           </div>
           <button onClick={run} disabled={loading} className="btn-rainbow w-full rounded-lg px-4 py-3 text-sm flex items-center justify-center gap-2 disabled:opacity-60">
@@ -141,7 +145,7 @@ No commentary outside these sections.`;
               <div className="grid md:grid-cols-2 gap-3">
                 {res.insights.map((ins, i) => (
                   <div key={i} className="rounded-xl border border-border bg-card p-4 hover:border-[color:var(--ring)] transition-colors" style={{ borderLeft: `3px solid ${ACCENTS[i % ACCENTS.length]}` }}>
-                    <h4 className="font-semibold text-sm">{ins.title}</h4>
+                    <h3 className="font-semibold text-sm">{ins.title}</h3>
                     {ins.body && <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed">{ins.body}</p>}
                   </div>
                 ))}
@@ -168,7 +172,7 @@ function Block({ title, accent, children }: { title: string; accent: string; chi
     <div className="rounded-2xl border border-border bg-card overflow-hidden">
       <div className="px-5 py-3 flex items-center gap-2 border-b border-border" style={{ background: `color-mix(in oklab, ${accent} 10%, transparent)` }}>
         <span className="h-2 w-2 rounded-full" style={{ background: accent, boxShadow: `0 0 12px ${accent}` }} />
-        <h3 className="font-display text-sm font-semibold">{title}</h3>
+        <h2 className="font-display text-sm font-semibold">{title}</h2>
       </div>
       <div className="p-5">{children}</div>
     </div>

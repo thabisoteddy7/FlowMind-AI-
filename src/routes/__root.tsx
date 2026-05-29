@@ -57,9 +57,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "FlowMind — AI Workplace Assistant" },
-      { name: "description", content: "Automate emails, meetings, planning and research with FlowMind, your AI workplace assistant." },
       { name: "theme-color", content: "#0D0D0D" },
+      { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "FlowMind" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
