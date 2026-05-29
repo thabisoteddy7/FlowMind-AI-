@@ -2,8 +2,11 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Mail, FileText, ListTodo, Sparkles, ArrowRight, Clock } from "lucide-react";
 import { getActivity, getSettings, counts, type ActivityItem } from "@/lib/activity";
+import { Chatbot } from "@/components/Chatbot";
+import { Board } from "@/components/Board";
 
 export const Route = createFileRoute("/")({
+
   head: () => ({
     meta: [
       { title: "Dashboard — FlowMind" },
@@ -60,9 +63,18 @@ function Dashboard() {
       <div className="relative overflow-hidden rounded-2xl border border-border p-6 lg:p-10 glass-card animate-slide-up">
         <div
           aria-hidden
-          className="absolute -top-32 -right-32 h-72 w-72 rounded-full blur-3xl opacity-40"
-          style={{ background: "var(--gradient-rainbow)" }}
+          className="absolute -top-40 -right-32 h-[28rem] w-[28rem] rounded-full blur-3xl opacity-70 pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(circle, #ff7a18 0%, #ff3d00 35%, rgba(255,61,0,0.25) 65%, transparent 80%)",
+          }}
         />
+        <div
+          aria-hidden
+          className="absolute -bottom-32 -left-24 h-80 w-80 rounded-full blur-3xl opacity-40 pointer-events-none"
+          style={{ background: "radial-gradient(circle, #ffb830 0%, transparent 70%)" }}
+        />
+
         <p className="text-sm text-muted-foreground">{greeting()},</p>
         <h1 className="mt-1 text-3xl lg:text-5xl font-display font-bold tracking-tight">
           <span className="rainbow-text">{name?.trim() ? name : "welcome back"}</span>
@@ -118,6 +130,25 @@ function Dashboard() {
           ))}
         </div>
       </section>
+
+      {/* Chatbot + Board */}
+      <section className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+        <div className="lg:col-span-2">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="font-display text-lg font-semibold">AI Assistant</h2>
+            <span className="text-xs text-muted-foreground">Chat with FlowMind</span>
+          </div>
+          <Chatbot />
+        </div>
+        <div className="lg:col-span-3">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="font-display text-lg font-semibold">Your Board</h2>
+            <span className="text-xs text-muted-foreground">Drag cards between columns</span>
+          </div>
+          <Board />
+        </div>
+      </section>
+
 
       {/* Recent activity */}
       <section>
