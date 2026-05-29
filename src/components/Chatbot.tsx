@@ -32,11 +32,12 @@ export function Chatbot() {
     onSuccess: (res, vars) => {
       const reply = res.content || "…";
       setMessages([...vars, { role: "assistant", content: reply }]);
-      pushActivity({
+      addActivity({
         kind: "research",
         title: vars[vars.length - 1].content.slice(0, 60),
         preview: reply.slice(0, 120),
       });
+
     },
   });
 
