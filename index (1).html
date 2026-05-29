@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flowmind — AI Workplace Productivity Assistant</title>
+  <meta name="description" content="Flowmind helps professionals automate daily work tasks using AI. Smart email generation, meeting summarization, task planning, and research — all in one beautiful dashboard." />
+  <meta property="og:title" content="Flowmind — AI Workplace Productivity Assistant" />
+  <meta property="og:description" content="Think less. Flow more. Your team's all-in-one AI co-worker." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #080810;
+      --surface: #111120;
+      --border: rgba(255,255,255,0.07);
+      --text: #f0f0ff;
+      --muted: rgba(240,240,255,0.45);
+      --purple: #9B6FFF;
+      --cyan: #00E5FF;
+      --pink: #FF4FCA;
+      --amber: #FFB830;
+      --lime: #7FFF5F;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Noise texture overlay ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* ── Ambient glow blobs ── */
+    .blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.12;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .blob-1 { width: 600px; height: 600px; background: var(--purple); top: -200px; left: -150px; }
+    .blob-2 { width: 500px; height: 500px; background: var(--cyan); top: 30%; right: -200px; }
+    .blob-3 { width: 400px; height: 400px; background: var(--pink); bottom: 10%; left: 20%; }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      background: rgba(8, 8, 16, 0.8);
+      backdrop-filter: blur(20px);
+    }
+
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      background: linear-gradient(90deg, var(--purple), var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-cta {
+      padding: 0.5rem 1.25rem;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      text-decoration: none;
+      background: linear-gradient(135deg, var(--purple), var(--pink));
+      color: #fff;
+      transition: opacity 0.2s;
+    }
+    .nav-cta:hover { opacity: 0.85; }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 8rem 1.5rem 4rem;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 1rem;
+      border-radius: 100px;
+      border: 1px solid rgba(155,111,255,0.4);
+      background: rgba(155,111,255,0.1);
+      font-size: 0.8rem;
+      color: var(--purple);
+      margin-bottom: 1.75rem;
+      letter-spacing: 0.04em;
+    }
+
+    .hero-badge span { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--purple); animation: pulse 2s infinite; }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.7); }
+    }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      margin-bottom: 1.5rem;
+      max-width: 900px;
+    }
+
+    .gradient-word { background: linear-gradient(135deg, var(--purple) 0%, var(--cyan) 50%, var(--pink) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: var(--muted);
+      max-width: 580px;
+      margin: 0 auto 2.5rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn-primary {
+      padding: 0.875rem 2rem;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 500;
+      text-decoration: none;
+      background: linear-gradient(135deg, var(--purple), var(--pink));
+      color: #fff;
+      transition: transform 0.2s, opacity 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-primary:hover { transform: translateY(-2px); opacity: 0.9; }
+
+    .btn-secondary {
+      padding: 0.875rem 2rem;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 500;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      color: var(--text);
+      background: transparent;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .btn-secondary:hover { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.04); }
+
+    /* ── Rainbow divider ── */
+    .rainbow-bar {
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--purple), var(--cyan), var(--lime), var(--amber), var(--pink), var(--purple));
+      background-size: 200% 100%;
+      animation: rainbow-shift 4s linear infinite;
+    }
+    @keyframes rainbow-shift {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+
+    /* ── Sections ── */
+    section {
+      position: relative;
+      z-index: 1;
+      padding: 5rem 1.5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--purple);
+      margin-bottom: 0.75rem;
+    }
+
+    h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+
+    .section-desc {
+      color: var(--muted);
+      max-width: 560px;
+      margin-bottom: 3rem;
+      font-size: 1.05rem;
+    }
+
+    /* ── Feature grid ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.75rem;
+      transition: border-color 0.25s, transform 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+    .feature-card:hover { border-color: rgba(155,111,255,0.35); transform: translateY(-4px); }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      border-radius: 16px 16px 0 0;
+    }
+    .card-purple::before { background: linear-gradient(90deg, var(--purple), var(--cyan)); }
+    .card-pink::before   { background: linear-gradient(90deg, var(--pink), var(--amber)); }
+    .card-cyan::before   { background: linear-gradient(90deg, var(--cyan), var(--lime)); }
+    .card-lime::before   { background: linear-gradient(90deg, var(--lime), var(--purple)); }
+
+    .feature-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+    .feature-card h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+    .feature-card p { color: var(--muted); font-size: 0.9rem; line-height: 1.6; }
+
+    /* ── Stats row ── */
+    .stats-row {
+      display: flex;
+      gap: 1px;
+      background: var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .stat {
+      flex: 1;
+      background: var(--surface);
+      padding: 2rem 1.5rem;
+      text-align: center;
+    }
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      background: linear-gradient(135deg, var(--purple), var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .stat-label { color: var(--muted); font-size: 0.85rem; margin-top: 0.25rem; }
+
+    /* ── Tech stack pills ── */
+    .stack-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      margin-top: 1.5rem;
+    }
+    .pill {
+      padding: 0.4rem 1rem;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+      color: var(--muted);
+    }
+    .pill.purple { border-color: rgba(155,111,255,0.4); color: var(--purple); background: rgba(155,111,255,0.1); }
+    .pill.cyan   { border-color: rgba(0,229,255,0.4); color: var(--cyan); background: rgba(0,229,255,0.1); }
+    .pill.pink   { border-color: rgba(255,79,202,0.4); color: var(--pink); background: rgba(255,79,202,0.1); }
+    .pill.lime   { border-color: rgba(127,255,95,0.4); color: var(--lime); background: rgba(127,255,95,0.1); }
+    .pill.amber  { border-color: rgba(255,184,48,0.4); color: var(--amber); background: rgba(255,184,48,0.1); }
+
+    /* ── CTA section ── */
+    .cta-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 4rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-block::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(155,111,255,0.12) 0%, transparent 70%);
+    }
+
+    /* ── Disclaimer ── */
+    .disclaimer {
+      text-align: center;
+      padding: 2rem 1.5rem;
+      color: var(--muted);
+      font-size: 0.8rem;
+      border-top: 1px solid var(--border);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    /* ── Footer ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    footer p { color: var(--muted); font-size: 0.85rem; }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a { color: var(--muted); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--text); }
+
+    /* ── Responsive ── */
+    @media (max-width: 700px) {
+      .nav-links { display: none; }
+      .stats-row { flex-direction: column; gap: 0; }
+      footer { flex-direction: column; align-items: flex-start; }
+      h1 { font-size: 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient blobs -->
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+
+  <!-- Nav -->
+  <nav>
+    <a href="#" class="logo">Flowmind</a>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#stack">Tech Stack</a></li>
+      <li><a href="https://github.com/your-username/flowmind">GitHub</a></li>
+    </ul>
+    <a href="https://github.com/your-username/flowmind" class="nav-cta">View on GitHub →</a>
+  </nav>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-badge">
+      <span></span> Powered by Claude AI
+    </div>
+    <h1>
+      Think less.<br/>
+      <span class="gradient-word">Flow more.</span>
+    </h1>
+    <p class="hero-sub">
+      Flowmind is your team's AI-powered co-worker — automating emails, meeting notes, task planning, and research from one beautiful dashboard.
+    </p>
+    <div class="hero-actions">
+      <a href="https://github.com/your-username/flowmind" class="btn-primary">⭐ Star on GitHub</a>
+      <a href="https://github.com/your-username/flowmind#getting-started" class="btn-secondary">Get Started →</a>
+    </div>
+  </div>
+
+  <div class="rainbow-bar"></div>
+
+  <!-- Stats -->
+  <section>
+    <div class="stats-row">
+      <div class="stat">
+        <div class="stat-num">4</div>
+        <div class="stat-label">AI-powered tools</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">&lt;2s</div>
+        <div class="stat-label">Average response time</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Responsive design</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">MIT</div>
+        <div class="stat-label">Open source license</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features">
+    <div class="section-label">Core Features</div>
+    <h2>Everything your team<br/>needs to move faster</h2>
+    <p class="section-desc">Four AI-powered tools, structured with precision prompt engineering, designed to save professionals hours every week.</p>
+
+    <div class="features-grid">
+      <div class="feature-card card-purple">
+        <span class="feature-icon">📧</span>
+        <h3>Smart Email Generator</h3>
+        <p>Generate polished, professional emails in seconds. Select tone, recipient type, and key points — Flowmind handles the rest.</p>
+      </div>
+      <div class="feature-card card-pink">
+        <span class="feature-icon">📝</span>
+        <h3>Meeting Notes Summarizer</h3>
+        <p>Paste raw notes or transcripts and get structured action items, deadlines, key points, and an executive summary instantly.</p>
+      </div>
+      <div class="feature-card card-cyan">
+        <span class="feature-icon">📅</span>
+        <h3>AI Task Planner</h3>
+        <p>Turn a chaotic task list into a prioritised, time-blocked daily schedule — colour-coded by urgency with clear reasoning.</p>
+      </div>
+      <div class="feature-card card-lime">
+        <span class="feature-icon">🔍</span>
+        <h3>AI Research Assistant</h3>
+        <p>Get structured research summaries with key insights, suggested next steps, and questions to explore further — on any topic.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tech Stack -->
+  <section id="stack">
+    <div class="section-label">Tech Stack</div>
+    <h2>Built with modern,<br/>production-grade tools</h2>
+    <p class="section-desc">Flowmind uses a lean, high-performance stack that's easy to fork, extend, and deploy in minutes.</p>
+    <div class="stack-pills">
+      <span class="pill cyan">React 18</span>
+      <span class="pill lime">Tailwind CSS</span>
+      <span class="pill purple">Claude AI (claude-sonnet-4)</span>
+      <span class="pill amber">Vite</span>
+      <span class="pill pink">React Router v6</span>
+      <span class="pill">Lucide Icons</span>
+      <span class="pill">Vercel</span>
+      <span class="pill">Supabase (optional)</span>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section>
+    <div class="cta-block">
+      <div class="section-label" style="position:relative;">Open Source</div>
+      <h2 style="position:relative;">Ready to start flowing?</h2>
+      <p class="section-desc" style="margin: 0 auto 2rem; position:relative;">Fork the repo, add your Anthropic API key, and you're up and running in under five minutes.</p>
+      <div class="hero-actions" style="position:relative;">
+        <a href="https://github.com/your-username/flowmind" class="btn-primary">Clone the repo →</a>
+        <a href="https://github.com/your-username/flowmind/blob/main/README.md" class="btn-secondary">Read the docs</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Disclaimer -->
+  <div class="disclaimer">
+    ⚠️ <strong>AI-generated content may require human review before use.</strong><br/>
+    Flowmind uses Anthropic's Claude API to generate content. Outputs should always be reviewed by a qualified human before being sent, published, or acted upon.
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Flowmind. Built with ❤️ for teams that move fast. MIT License.</p>
+    <div class="footer-links">
+      <a href="https://github.com/your-username/flowmind">GitHub</a>
+      <a href="https://github.com/your-username/flowmind/blob/main/README.md">Docs</a>
+      <a href="https://github.com/your-username/flowmind/blob/main/LICENSE">License</a>
+      <a href="https://github.com/your-username/flowmind/issues">Issues</a>
+    </div>
+  </footer>
+
+</body>
+</html>
